@@ -270,11 +270,40 @@ def top5word():
         print(i+1, end='')
         print('번째', end = '')
         print(t5[i])
+        
+        
 
+def userfind(str):
+    a = main()
+    b = word()
+    m = 0
+    for c in str:
+        m = m + ord(c)
+    m2 = 0
+
+    user = []
+    wd = []
+
+    for i in range(5):
+        p = a[i].first
+        if p is not None:
+         print(p.n)
+
+    for i in range(len(b) - 2):
+        if i % 2 == 0:
+            user.append(b[i])
+        if i % 2 == 1:
+            wd.append(b[i])
+
+    for i in range(len(wd)):
+        for c in wd[i]:
+            m2 = m2+ord(wd[i])
+        if m2 == m:
+            print(i)
 
 
 
 total()
 mean()
 top5word()
-
+userfind('그건')
