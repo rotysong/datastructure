@@ -34,6 +34,18 @@ class Adj:
         self.n = 0
         self.next = None
 
+class Word:
+    def __init__(self,name, word):
+        self.name = name
+        self.n = 0
+        self.word = word
+        self.first = None
+    def add(self,v):
+        a = Adj()
+        a.n = v.n
+        a.next = self.first
+        self.first = a
+
 
 class Vertex:
     def __init__(self, name, nick):
@@ -106,7 +118,7 @@ def main():
     for i in range(len(b)):
         b[i].n = i
 
-    f = open('friend.txt')
+    f = open('2.txt')
     readlineTF = True
     while readlineTF:
         aa = f.readline()
@@ -270,40 +282,91 @@ def top5word():
         print(i+1, end='')
         print('번째', end = '')
         print(t5[i])
-        
-        
 
-def userfind(str):
-    a = main()
-    b = word()
-    m = 0
-    for c in str:
-        m = m + ord(c)
-    m2 = 0
+def wordlist():
+    a = word()
+    b = []
+    c = []
+    lword=[]
 
-    user = []
-    wd = []
 
-    for i in range(5):
-        p = a[i].first
-        if p is not None:
-         print(p.n)
-
-    for i in range(len(b) - 2):
+    for i in range(len(a) - 2):
         if i % 2 == 0:
-            user.append(b[i])
+            b.append(a[i])
         if i % 2 == 1:
-            wd.append(b[i])
+            c.append(a[i])
 
-    for i in range(len(wd)):
-        for c in wd[i]:
-            m2 = m2+ord(wd[i])
-        if m2 == m:
-            print(i)
+    for i in range(len(b)):
+        lword.append(Word(b[i],c[i]))
+        lword[i].n = i
+
+    for i in range(len(lword)):
+        for j in range(i+1, len(lword), 1):
+             if lword[i].name == lword[j].name:
+                lword[i].add(lword[j])
+
+    return lword
+
+def wordlist2():
+    a = wordlist()
+    In = []
+    In.append(a[0])
+    p = a[0]
+
+    for i in range(len(a)):
+        if a[i].name != p.name:
+            In.append(a[i])
+            p = a[i]
+
+    return In
+
+
+def top5user():
+    a = wordlist()
+    b = wordlist2()
+    tweetnumber = []
+    rank = []
+    top5 = []
+
+    for i in range(len(b)):
+        count = 0
+        p = b[i].first
+        count +=1
+        while p is not None:
+            p = p.next
+            count +=1
+        tweetnumber.append((b[i].name,count))
+
+    for i in range(len(tweetnumber)):
+        rank.append(tweetnumber[i][1])
+
+    orgrank = list(rank)
+    rank.sort()
+    rank.reverse()
+    top5.append(rank[0])
+    prev = rank[0]
+    i = 0
+    while len(top5) <5:
+        if rank[i] != prev:
+            top5.append(rank[i])
+            prev = rank[i]
+        i+=1
+    for j in range(len(top5)):
+     for i in range(len(tweetnumber)):
+         if tweetnumber[i][1] == top5[j]:
+             print(j+1, end = '')
+             print("등: ",end = '')
+             print(tweetnumber[i][0])
+
+
+
+
+
 
 
 
 total()
 mean()
 top5word()
-userfind('그건')
+top5user()
+
