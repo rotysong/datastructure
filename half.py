@@ -228,60 +228,53 @@ def mean():
 
 def top5word():
     a = word()
+    userl = []
+    wordl = []
+    nomulti = []
     b = []
-    c = []
-    d = []
-    e = []
-    f = []
-    g = []
-    t5 = []
+    rank = []
+    orgrank = []
+    top5 = []
+
 
     for i in range(len(a)-2):
         if i%2 == 0:
-            b.append(a[i])
+            userl.append(a[i])
         if i%2 == 1:
-            c.append(a[i])
-    c.sort()
-    d = multi(c)
+            wordl.append(a[i])
 
-    for i in range(len(d)):
+    nomulti = multi(wordl)
+
+    for i in range(len(nomulti)):
         count = 0
-        for j in range(len(c)):
-            if c[j] == d[i]:
+        for j in range(len(wordl)):
+            if nomulti[i] == wordl[j]:
                 count +=1
-        if count > 1:
-            e.append(d[i])
+        b.append((nomulti[i],count))
 
-    for i in range(len(e)):
-        count = 0
-        for j in range(len(c)):
-         if e[i] == c[j]:
-             count += 1
-        if count > 0:
-         f.append(count)
+    for i in range(len(b)):
+      rank.append(b[i][1])
 
-    g = list(f)
-    f.sort()
-    f.reverse()
+    orgrank = list(rank)
+    rank.sort()
+    rank.reverse()
+    top5.append(rank[0])
+    prev = rank[0]
+    i = 0
+    while len(top5) < 5:
+     if rank[i] != prev:
+        top5.append(rank[i])
+        prev = rank[i]
+     i += 1
+    for j in range(len(top5)):
+     for i in range(len(b)):
+        if b[i][1] == top5[j]:
+            print(j + 1, end='')
+            print("등: ", end='')
+            print(b[i][0])
 
-    f = multi(f)
-    f.reverse()
 
-    count = 0
 
-    for i in range(len(f)):
-        if len(t5)<5:
-            t5.append(f[i])
-
-    for i in range(len(t5)):
-     for j in range(len(g)):
-        if  t5[i] == g[j] :
-            t5[i] = e[i]
-
-    for i in range(len(t5)):
-        print(i+1, end='')
-        print('번째', end = '')
-        print(t5[i])
 
 def wordlist():
     a = word()
@@ -358,15 +351,30 @@ def top5user():
              print("등: ",end = '')
              print(tweetnumber[i][0])
 
-
-
-
-
-
+def wordfind():
+    a = wordlist()
+    b = wordlist2()
+    tg= 'ㅋㅋ'
+    list = []
+    prev = 0
+    for i in range(len(b)):
+        p = b[i].first
+        while p is not None:
+            if b[i].word == tg:
+              if b[i].name != prev:
+                prev = b[i].name
+                list.append(b[i].name)
+            if a[p.n].word == tg:
+              if a[p.n].name != prev:
+                prev = a[p.n].word
+                list.append(a[p.n].name)
+            p = p.next
+    print(list)
 
 
 total()
 mean()
-top5word()
 top5user()
+top5word()
+wordfind()
 
