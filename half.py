@@ -119,7 +119,7 @@ def main():
     for i in range(len(b)):
         b[i].n = i
 
-    f = open('2.txt')
+    f = open('friend.txt')
     readlineTF = True
     while readlineTF:
         aa = f.readline()
