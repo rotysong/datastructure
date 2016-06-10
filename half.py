@@ -347,10 +347,32 @@ def top5user():
                 print("등: ", end='')
                 print(tweetnumber[i][0])
 
-def printwordfind():
+def wordfind(string):
     a = wordlist()
     b = wordlist2()
-    tg = '그건'
+    tg = string
+    list = []
+    prev = 0
+    for i in range(len(b)):
+        p = b[i].first
+        while p is not None:
+            if b[i].word == tg:
+                if b[i].name != prev:
+                    prev = b[i].name
+                    list.append(b[i].name)
+            if a[p.n].word == tg:
+                if a[p.n].name != prev:
+                    prev = a[p.n].word
+                    list.append(a[p.n].name)
+            p = p.next
+
+    print(list)
+
+
+def wordfind2(string2):
+    a = wordlist()
+    b = wordlist2()
+    tg = string2
     list = []
     prev = 0
     for i in range(len(b)):
@@ -369,31 +391,9 @@ def printwordfind():
     return list
 
 
-def wordfind():
-    a = wordlist()
-    b = wordlist2()
-    tg = '그건'
-    list = []
-    prev = 0
-    for i in range(len(b)):
-        p = b[i].first
-        while p is not None:
-            if b[i].word == tg:
-                if b[i].name != prev:
-                    prev = b[i].name
-                    list.append(b[i].name)
-            if a[p.n].word == tg:
-                if a[p.n].name != prev:
-                    prev = a[p.n].word
-                    list.append(a[p.n].name)
-            p = p.next
-
-    return list
-
-
-def wordfriend():
+def wordfriend(string2):
     a = main()
-    b = wordfind()
+    b = wordfind2(string2)
     for i in range(len(b)):
         for j in range(len(a)):
             p = a[j].first
@@ -402,11 +402,44 @@ def wordfriend():
                     print(a[p.n].name)
                     p = p.next
 
+def worddelete(string3):
+    a = wordlist()
+    b = wordlist2()
+    tg = string3
+    prev = 0
+    for i in range(len(b)):
+        prev = b[i]
+        p = b[i].first
+        if b[i].word == tg:
+            b[i] = b[i].first
+        if a[p.n].word == tg:
+            b[i].first = p.next
+            prev = p
+            p = p.next
+        while p is not None:
+            if a[p.n].word == tg:
+              prev.next = p.next
+            prev = p
+            p = p.next
+
+
+
+
 
 total()
+print("===============")
 mean()
+print("===============")
 top5user()
+print("===============")
 top5word()
-printwordfind()
-wordfriend()
-
+print("===============")
+string = input("찾고 싶은 단어를 입력하세요")
+wordfind(string)
+print("===============")
+string2 = input("찾고 싶은 친구가 입력한 단어를 입력하세요")
+wordfriend(string2)
+print("===============")
+string3 = input("지우고 싶은 단어를 입력하세요")
+worddelete(string3)
+print("===============")
