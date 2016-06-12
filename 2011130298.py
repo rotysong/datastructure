@@ -347,6 +347,7 @@ def top5user():
                 print("등: ", end='')
                 print(tweetnumber[i][0])
 
+
 def wordfind(string):
     a = wordlist()
     b = wordlist2()
@@ -369,10 +370,10 @@ def wordfind(string):
     print(list)
 
 
-def wordfind2(string2):
+def wordfind2(string):
     a = wordlist()
     b = wordlist2()
-    tg = string2
+    tg = string
     list = []
     prev = 0
     for i in range(len(b)):
@@ -391,9 +392,9 @@ def wordfind2(string2):
     return list
 
 
-def wordfriend(string2):
+def wordfriend(string):
     a = main()
-    b = wordfind2(string2)
+    b = wordfind2(string)
     for i in range(len(b)):
         for j in range(len(a)):
             p = a[j].first
@@ -402,10 +403,25 @@ def wordfriend(string2):
                     print(a[p.n].name)
                     p = p.next
 
-def worddelete(string3):
+
+def wordfriend2(string):
+    a = main()
+    b = wordfind2(string)
+    list = []
+    for i in range(len(b)):
+        for j in range(len(a)):
+            p = a[j].first
+            if b[i] == a[j].name:
+                while p is not None:
+                    list.append((a[p.n].name))
+                    p = p.next
+    return list
+
+
+def worddelete(string):
     a = wordlist()
     b = wordlist2()
-    tg = string3
+    tg = string
     prev = 0
     for i in range(len(b)):
         prev = b[i]
@@ -418,28 +434,67 @@ def worddelete(string3):
             p = p.next
         while p is not None:
             if a[p.n].word == tg:
-              prev.next = p.next
+                prev.next = p.next
             prev = p
             p = p.next
 
 
+def frienddelete(string):
+    Flist = wordfriend2(string)
+    a = main()
+    for i in range(len(Flist)):
+        for j in range(len(a)):
+            prev = a[j]
+            p = a[j].first
+            if Flist[i] == a[j].name:
+                a[j] = a[j].first
+            if Flist[i] == a[p.n].name:
+                a[j].first = p.next
+                prev = p
+                p = p.next
+            while p is not None:
+                if Flist[i] == a[p.n].name:
+                    prev.next = p.next
+                prev = p
+                p = p.next
 
 
+def meun():
+    print("1. Read data files")
+    print("2. display statistics")
+    print("3. Top 5 most tweeted words")
+    print("4. Top 5 most tweeted users")
+    print("5. Find users who tweeted a word")
+    print("6. Find all people who are friends of the above users")
+    print("7. Delete all mentions of a word")
+    print("8. Delete all users who mentioned a word")
+    print("9. Quit")
 
-total()
-print("===============")
-mean()
-print("===============")
-top5user()
-print("===============")
-top5word()
-print("===============")
-string = input("찾고 싶은 단어를 입력하세요")
-wordfind(string)
-print("===============")
-string2 = input("찾고 싶은 친구가 입력한 단어를 입력하세요")
-wordfriend(string2)
-print("===============")
-string3 = input("지우고 싶은 단어를 입력하세요")
-worddelete(string3)
-print("===============")
+    number = input("메뉴 번호를 입력하세요")
+    if number == 1:
+        total()
+    if number == 2:
+        mean()
+    if number == 3:
+        top5user()
+    if number == 4:
+        top5word()
+    if number == 5:
+        string = input("찾고 싶은 단어를 입력하세요")
+        wordfind(string)
+    if number == 6:
+        string = input("찾고 싶은 친구가 입력한 단어를 입력하세요")
+        wordfriend(string)
+    if number == 7:
+        string = input("지우고 싶은 단어를 입력하세요")
+        worddelete(string)
+    if number == 8:
+        string = input("단어를 입력하세요")
+        frienddelete(string)
+    if number == 9:
+        return print("감사합니다")
+    else:
+        return print("잘못입력하셨습니다. 다시 실행하세요")
+
+
+meun()
