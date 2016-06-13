@@ -399,9 +399,13 @@ def wordfriend(string):
         for j in range(len(a)):
             p = a[j].first
             if b[i] == a[j].name:
+                print(b[i],end = '')
+                print('의 친구들',end = '')
                 while p is not None:
-                    print(a[p.n].name)
+                    print(a[p.n].name, end = '')
+                    print(", ", end = '')
                     p = p.next
+            print(' ')
 
 
 def wordfriend2(string):
@@ -457,9 +461,19 @@ def frienddelete(string):
                     prev.next = p.next
                 prev = p
                 p = p.next
+                
+    for i in range(len(Flist)):
+        for j in range(len(a)):
+            if Flist[i] == a[j].name:
+                a[j].name = None
+                a[j].nick = None
+                a[j].n = 0
+                a[j].first = None
+                a[j].word = []
 
 
 def meun():
+    print("select menu")
     print("1. Read data files")
     print("2. display statistics")
     print("3. Top 5 most tweeted words")
@@ -484,6 +498,7 @@ def meun():
         wordfind(string)
     if number == 6:
         string = input("찾고 싶은 친구가 입력한 단어를 입력하세요")
+        wordfind(string)
         wordfriend(string)
     if number == 7:
         string = input("지우고 싶은 단어를 입력하세요")
