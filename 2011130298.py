@@ -13,7 +13,6 @@ def user():
 
     return list
 
-
 def word():
     f = open('word.txt')
     list = []
@@ -28,12 +27,10 @@ def word():
             readlineTF = False
     return list
 
-
 class Adj:
     def __init__(self):
         self.n = 0
         self.next = None
-
 
 class Word:
     def __init__(self, name, word):
@@ -48,14 +45,13 @@ class Word:
         a.next = self.first
         self.first = a
 
-
 class Vertex:
     def __init__(self, name, nick):
         self.name = name
         self.nick = nick
         self.n = 0
         self.first = None
-        self.word = []
+        self.word=[]
 
     def add(self, v):
         a = Adj()
@@ -85,7 +81,6 @@ class Vertex:
         a.append(self.name)
         return a
 
-
 def multi(list):
     buf = list
     seen = []
@@ -98,7 +93,6 @@ def multi(list):
             prev = buf[i]
             seen.append(buf[i])
     return seen
-
 
 def main():
     a = user()
@@ -119,7 +113,7 @@ def main():
     for i in range(len(b)):
         b[i].n = i
 
-    f = open('friend.txt')
+    f = open('2.txt')
     readlineTF = True
     while readlineTF:
         aa = f.readline()
@@ -154,79 +148,49 @@ def main():
         for j in range(len(b)):
             abc = b[j].vname()
             if e[i] == abc[0]:
-                b[j].word = b[j].word + [i + 1]
+                b[j].word = b[j].word+[i+1]
+
 
     return b
 
-
-def total():
-    count = 0
+def wordlist():
     a = word()
-    b = main()
+    b = []
     c = []
+    lword = []
+
     for i in range(len(a) - 2):
-        c.append(a[i])
+        if i % 2 == 0:
+            b.append(a[i])
+        if i % 2 == 1:
+            c.append(a[i])
 
-    for i in range(5):
-        p = b[i].first
-        while p:
-            p = p.next
-            count += 1
+    for i in range(len(b)):
+        lword.append(Word(b[i], c[i]))
+        lword[i].n = i
 
-    print("Total user: ", end=' ')
-    print(len(b))
-    print("Total tweets: ", end=" ")
-    print(len(c) // 2)
-    print("Total friendship records: ", end="")
-    print(count)
+    for i in range(len(lword)):
+        for j in range(i + 1, len(lword), 1):
+            if lword[i].name == lword[j].name:
+                lword[i].add(lword[j])
 
+    return lword
 
-def mean():
-    a = main()
-    big = 0
-    small = 0
-    countt = 0
-
-    ave = 0
-    mit = 0
-    mat = 0
+def wordlist2():
+    a = wordlist()
+    In = []
+    In.append(a[0])
+    p = a[0]
 
     for i in range(len(a)):
-        p = a[i].first
-        count = 0
-        while p:
-            p = p.next
-            count += 1
-            countt += 1
-        if count > big:
-            big = count
-        if count < small:
-            small = count
-    print('Average number of friends: ', end='')
-    print(countt // len(a))
-    print('Minimum number of friends: ', end='')
-    print(small)
-    print('Maximum number of friends: ', end='')
-    print(big)
+        if a[i].name != p.name:
+            In.append(a[i])
+            p = a[i]
 
-    for i in range(len(a)):
-        wordnumber = len(a[i].word)
-        ave = ave + wordnumber
-        if wordnumber > mat:
-            mat = wordnumber
-        if wordnumber < mit:
-            mit = wordnumber
+    return In
 
-    print('Average tweets per friends: ', end='')
-    print(ave // len(a))
-    print('Minimum tweets per friends: ', end='')
-    print(mit)
-    print('Maximum tweets per friends: ', end='')
-    print(mat)
-
-
-def top5word():
-    a = word()
+def top5word(wordlist):
+    a = wordlist
     userl = []
     wordl = []
     nomulti = []
@@ -235,11 +199,9 @@ def top5word():
     orgrank = []
     top5 = []
 
-    for i in range(len(a) - 2):
-        if i % 2 == 0:
-            userl.append(a[i])
-        if i % 2 == 1:
-            wordl.append(a[i])
+    for i in range(len(a)):
+        userl.append(a[i].name)
+        wordl.append(a[i].word)
 
     nomulti = multi(wordl)
 
@@ -271,48 +233,9 @@ def top5word():
                 print("등: ", end='')
                 print(b[i][0])
 
-
-def wordlist():
-    a = word()
-    b = []
-    c = []
-    lword = []
-
-    for i in range(len(a) - 2):
-        if i % 2 == 0:
-            b.append(a[i])
-        if i % 2 == 1:
-            c.append(a[i])
-
-    for i in range(len(b)):
-        lword.append(Word(b[i], c[i]))
-        lword[i].n = i
-
-    for i in range(len(lword)):
-        for j in range(i + 1, len(lword), 1):
-            if lword[i].name == lword[j].name:
-                lword[i].add(lword[j])
-
-    return lword
-
-
-def wordlist2():
-    a = wordlist()
-    In = []
-    In.append(a[0])
-    p = a[0]
-
-    for i in range(len(a)):
-        if a[i].name != p.name:
-            In.append(a[i])
-            p = a[i]
-
-    return In
-
-
-def top5user():
-    a = wordlist()
-    b = wordlist2()
+def top5user(wordlist, wordlist2):
+    a = wordlist
+    b = wordlist2
     tweetnumber = []
     rank = []
     top5 = []
@@ -347,132 +270,32 @@ def top5user():
                 print("등: ", end='')
                 print(tweetnumber[i][0])
 
-
-def wordfind(string):
-    a = wordlist()
-    b = wordlist2()
+def wordfind(string, wordlist, wordlist2):
+    a = wordlist
+    b = wordlist2
     tg = string
     list = []
     prev = 0
     for i in range(len(b)):
-        p = b[i].first
-        while p is not None:
-            if b[i].word == tg:
-                if b[i].name != prev:
-                    prev = b[i].name
-                    list.append(b[i].name)
-            if a[p.n].word == tg:
-                if a[p.n].name != prev:
-                    prev = a[p.n].word
-                    list.append(a[p.n].name)
-            p = p.next
-
-    print(list)
-
-
-def wordfind2(string):
-    a = wordlist()
-    b = wordlist2()
-    tg = string
-    list = []
-    prev = 0
-    for i in range(len(b)):
-        p = b[i].first
-        while p is not None:
-            if b[i].word == tg:
-                if b[i].name != prev:
-                    prev = b[i].name
-                    list.append(b[i].name)
-            if a[p.n].word == tg:
-                if a[p.n].name != prev:
-                    prev = a[p.n].word
-                    list.append(a[p.n].name)
-            p = p.next
-
-    return list
-
-
-def wordfriend(string):
-    a = main()
-    b = wordfind2(string)
-    for i in range(len(b)):
-        for j in range(len(a)):
-            p = a[j].first
-            if b[i] == a[j].name:
-                print(b[i],end = '')
-                print('의 친구들',end = '')
-                while p is not None:
-                    print(a[p.n].name, end = '')
-                    print(", ", end = '')
-                    p = p.next
-            print(' ')
-
-
-def wordfriend2(string):
-    a = main()
-    b = wordfind2(string)
-    list = []
-    for i in range(len(b)):
-        for j in range(len(a)):
-            p = a[j].first
-            if b[i] == a[j].name:
-                while p is not None:
-                    list.append((a[p.n].name))
-                    p = p.next
-    return list
-
-
-def worddelete(string):
-    a = wordlist()
-    b = wordlist2()
-    tg = string
-    prev = 0
-    for i in range(len(b)):
-        prev = b[i]
         p = b[i].first
         if b[i].word == tg:
-            b[i] = b[i].first
-        if a[p.n].word == tg:
-            b[i].first = p.next
-            prev = p
-            p = p.next
+            if b[i].name != prev:
+                prev = b[i].name
+                list.append(b[i].name)
         while p is not None:
             if a[p.n].word == tg:
-                prev.next = p.next
-            prev = p
+                if a[p.n].name != prev:
+                    prev = a[p.n].word
+                    list.append(a[p.n].name)
             p = p.next
-
-
-def frienddelete(string):
-    Flist = wordfriend2(string)
-    a = main()
-    for i in range(len(Flist)):
-        for j in range(len(a)):
-            prev = a[j]
-            p = a[j].first
-            if Flist[i] == a[j].name:
-                a[j] = a[j].first
-            if Flist[i] == a[p.n].name:
-                a[j].first = p.next
-                prev = p
-                p = p.next
-            while p is not None:
-                if Flist[i] == a[p.n].name:
-                    prev.next = p.next
-                prev = p
-                p = p.next
-                
-    for i in range(len(Flist)):
-        for j in range(len(a)):
-            if Flist[i] == a[j].name:
-                a[j].name = None
-                a[j].nick = None
-                a[j].n = 0
-                a[j].first = None
-                a[j].word = []
-
+    return list
 
 def meun():
+    a = main()
+    b = wordlist()
+    c = wordlist2()
+    count = 0
+    count2 = 0
     print("select menu")
     print("1. Read data files")
     print("2. display statistics")
@@ -483,33 +306,138 @@ def meun():
     print("7. Delete all mentions of a word")
     print("8. Delete all users who mentioned a word")
     print("9. Quit")
-
     number = input("메뉴 번호를 입력하세요")
-    if number == 1:
-        total()
-    if number == 2:
-        mean()
-    if number == 3:
-        top5user()
-    if number == 4:
-        top5word()
-    if number == 5:
-        string = input("찾고 싶은 단어를 입력하세요")
-        wordfind(string)
-    if number == 6:
-        string = input("찾고 싶은 친구가 입력한 단어를 입력하세요")
-        wordfind(string)
-        wordfriend(string)
-    if number == 7:
-        string = input("지우고 싶은 단어를 입력하세요")
-        worddelete(string)
-    if number == 8:
+    number = 0
+    while number != 9:
+     number = input("메뉴 번호를 입력하세요")
+     if number == 0:
+         for i in range(len(a)):
+             if a[i].name is not None:
+                 count+=1
+         for j in range(len(a)):
+             p = a[j].first
+             while p is not None:
+                count2 +=1
+                p = p.next
+         print("Total user: ", end=' ')
+         print(count)
+         print("Total tweets: ", end=" ")
+         print(len(b))
+         print("Total friendship records: ", end="")
+         print(count2)
+     if number == 2:
+         big = 0
+         small = 0
+         countt = 0
+         ave = 0
+         mit = 0
+         mat = 0
+
+         for i in range(len(a)):
+             p = a[i].first
+             count = 0
+             while p:
+                 p = p.next
+                 count += 1
+                 countt += 1
+             if count > big:
+                 big = count
+             if count < small:
+                 small = count
+         print('Average number of friends: ', end='')
+         print(countt // len(a))
+         print('Minimum number of friends: ', end='')
+         print(small)
+         print('Maximum number of friends: ', end='')
+         print(big)
+
+         for i in range(len(c)):
+             countt = 0
+             p = b[i].first
+             countt += 1
+             while p is not None:
+                 p = p.next
+                 count += 1
+             if count > mat:
+                 mat = count
+             if count < mit:
+                 mit = count
+
+         print('Average tweets per users: ', end='')
+         print(len(b) // len(a))
+         print('Minimum tweets per users: ', end='')
+         print(mit)
+         print('Maximum tweets per users: ', end='')
+         print(mat)
+     if number == 3:
+        top5word(b)
+     if number == 4:
+        top5user(b, c)
+     if number == 5:
         string = input("단어를 입력하세요")
-        frienddelete(string)
-    if number == 9:
+        list = wordfind(string, b,c)
+        print(list)
+     if number == 6:
+        string = input("단어를 입력하세요")
+        list = wordfind(string, b,c)
+        for i in range(len(list)):
+            for j in range(len(a)):
+                p = a[j].first
+                if list[i] == a[j].name:
+                    print(list[i], end='')
+                    print('의 친구들', end='')
+                    while p is not None:
+                        print(a[p.n].name, end='')
+                        print(", ", end='')
+                        p = p.next
+                print(' ')
+     if number == 7:
+        string = input("지우고 싶은 단어를 입력하세요")
+        tg = string
+        prev = 0
+        for i in range(len(c)):
+            prev = c[i]
+            p = c[i].first
+            if c[i].word == tg:
+                c[i] = c[i].first
+            if b[p.n].word == tg:
+                c[i].first = p.next
+                prev = p
+                p = p.next
+            while p is not None:
+                if b[p.n].word == tg:
+                    prev.next = p.next
+                prev = p
+                p = p.next
+     if number == 8:
+        string = input("단어를 입력하세요")
+        Flist = wordfind(string, b, c)
+        for i in range(len(Flist)):
+            for j in range(len(a)):
+                prev = a[j]
+                p = a[j].first
+                if Flist[i] == a[j].name:
+                    a[j] = a[j].first
+                if Flist[i] == a[p.n].name:
+                    a[j].first = p.next
+                    prev = p
+                    p = p.next
+                while p is not None:
+                    if Flist[i] == a[p.n].name:
+                        prev.next = p.next
+                    prev = p
+                    p = p.next
+
+        for i in range(len(Flist)):
+            for j in range(len(a)):
+                if Flist[i] == a[j].name:
+                    a[j].name = None
+                    a[j].nick = None
+                    a[j].n = 0
+                    a[j].first = None
+                    a[j].word = []
+     if number == 9:
         return print("감사합니다")
-    else:
-        return print("잘못입력하셨습니다. 다시 실행하세요")
 
 
 meun()
