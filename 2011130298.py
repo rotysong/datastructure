@@ -113,7 +113,7 @@ def main():
     for i in range(len(b)):
         b[i].n = i
 
-    f = open('2.txt')
+    f = open('friend.txt')
     readlineTF = True
     while readlineTF:
         aa = f.readline()
@@ -306,11 +306,10 @@ def meun():
     print("7. Delete all mentions of a word")
     print("8. Delete all users who mentioned a word")
     print("9. Quit")
-    number = input("메뉴 번호를 입력하세요")
     number = 0
-    while number != 9:
+    while number != "9":
      number = input("메뉴 번호를 입력하세요")
-     if number == 0:
+     if number == "1":
          for i in range(len(a)):
              if a[i].name is not None:
                  count+=1
@@ -325,7 +324,7 @@ def meun():
          print(len(b))
          print("Total friendship records: ", end="")
          print(count2)
-     if number == 2:
+     if number == "2":
          big = 0
          small = 0
          countt = 0
@@ -357,11 +356,11 @@ def meun():
              countt += 1
              while p is not None:
                  p = p.next
-                 count += 1
-             if count > mat:
-                 mat = count
-             if count < mit:
-                 mit = count
+                 countt += 1
+             if countt > mat:
+                 mat = countt
+             if countt < mit:
+                 mit = countt
 
          print('Average tweets per users: ', end='')
          print(len(b) // len(a))
@@ -369,47 +368,43 @@ def meun():
          print(mit)
          print('Maximum tweets per users: ', end='')
          print(mat)
-     if number == 3:
+     if number == "3":
         top5word(b)
-     if number == 4:
+     if number == "4":
         top5user(b, c)
-     if number == 5:
+     if number == "5":
         string = input("단어를 입력하세요")
         list = wordfind(string, b,c)
         print(list)
-     if number == 6:
+     if number == "6":
         string = input("단어를 입력하세요")
-        list = wordfind(string, b,c)
-        for i in range(len(list)):
+        list6 = wordfind(string, b,c)
+        for i in range(len(list6)):
             for j in range(len(a)):
                 p = a[j].first
-                if list[i] == a[j].name:
-                    print(list[i], end='')
+                if list6[i] == a[j].name:
+                    print(list6[i], end='')
                     print('의 친구들', end='')
                     while p is not None:
                         print(a[p.n].name, end='')
                         print(", ", end='')
                         p = p.next
-                print(' ')
-     if number == 7:
+            print(' ')
+     if number == "7":
         string = input("지우고 싶은 단어를 입력하세요")
         tg = string
         prev = 0
         for i in range(len(c)):
-            prev = c[i]
-            p = c[i].first
-            if c[i].word == tg:
-                c[i] = c[i].first
-            if b[p.n].word == tg:
-                c[i].first = p.next
-                prev = p
-                p = p.next
-            while p is not None:
-                if b[p.n].word == tg:
-                    prev.next = p.next
-                prev = p
-                p = p.next
-     if number == 8:
+         prev = c[i]
+         p = c[i].first
+         if c[i].word == tg:
+             c[i] = c[i].first
+         while p is not None:
+             if b[p.n].word == tg:
+                 prev.next = p.next
+             prev = p
+             p = p.next
+     if number == "8":
         string = input("단어를 입력하세요")
         Flist = wordfind(string, b, c)
         for i in range(len(Flist)):
@@ -436,7 +431,7 @@ def meun():
                     a[j].n = 0
                     a[j].first = None
                     a[j].word = []
-     if number == 9:
+     if number == "9":
         return print("감사합니다")
 
 
